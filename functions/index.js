@@ -8,7 +8,7 @@ const postsCollection = admin.firestore().collection('posts');
 // Create and Deploy Your First Cloud Functions
 // https://firebase.google.com/docs/functions/write-firebase-functions
 
-exports.fetchPosts = functions.https.onRequest((request, response) => {
+exports.fetchPosts = functions.https.onRequest(async (request, response) => {
   functions.logger.info('Called the fetchPosts');
 
   if (request.method !== 'GET') {
@@ -18,9 +18,22 @@ exports.fetchPosts = functions.https.onRequest((request, response) => {
     return;
   }
 
-  response.json({
-    message: 'This is fetchPosts',
-  });
+  try {
+    const snapShot = await postsCollection.get();
+    const storedPosts = snapShot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+      };
+    });
+
+    response.json(storedPosts);
+  } catch (error) {
+    response.status(500).json({
+      message: 'Something error happened.',
+    });
+  }
 });
 
 exports.createPost = functions.https.onRequest(async (request, response) => {
@@ -39,7 +52,7 @@ exports.createPost = functions.https.onRequest(async (request, response) => {
 
     response.json({ ...savedData });
   } catch (error) {
-    response.json({
+    response.status(400).json({
       message: error.message,
     });
   }
