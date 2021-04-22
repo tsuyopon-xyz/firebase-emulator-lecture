@@ -4,6 +4,7 @@ const functions = require('firebase-functions');
 // https://qiita.com/seya/items/0f12bd09c8e856123bc3
 const cors = require('cors')({ origin: true });
 const { fetchPosts, createPost } = require('./services/PostService');
+const { saveUser } = require('./services/UserService');
 
 if (process.env.FIRESTORE_EMULATOR_HOST) {
   // ダミーデータ投入処理をする
@@ -58,4 +59,11 @@ exports.createPost = functions.https.onRequest((request, response) => {
       });
     }
   });
+});
+
+exports.saveUserOnCreate = functions.auth.user().onCreate(async (user) => {
+  functions.logger.info('The "saveUserOnCreate"', { user });
+
+  // User情報をfirestoreに保存する処理を実装
+  await saveUser(user);
 });

@@ -1,7 +1,6 @@
-const admin = require('firebase-admin');
-admin.initializeApp();
+const { firestore } = require('../firebase-admin');
 
-const collection = admin.firestore().collection('posts');
+const collection = firestore().collection('posts');
 
 exports.fetchPosts = async () => {
   const snapShot = await collection.get();
