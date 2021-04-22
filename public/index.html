@@ -106,6 +106,10 @@
       </button>
       <button type="button" id="signin-button">メール認証（ログイン）</button>
     </div>
+    <div>
+      <button type="button" id="fetch-posts-button">Post一覧取得</button>
+      <button type="button" id="create-post-button">Post1件作成</button>
+    </div>
 
     <script>
       document.addEventListener('DOMContentLoaded', function () {
@@ -147,6 +151,8 @@
             'Error loading the Firebase SDK, check the console.';
         }
       });
+
+      // Authの動作確認
       const signupButton = document.getElementById('signup-button');
       const signinButton = document.getElementById('signin-button');
 
@@ -168,6 +174,22 @@
           .auth()
           .signInWithEmailAndPassword(email, password);
         console.log({ userCredential });
+      });
+
+      // APIとのやりとり
+      const fetchPostsButton = document.getElementById('fetch-posts-button');
+      const createPostButton = document.getElementById('create-post-button');
+      const BASE_API_URL =
+        'http://localhost:5001/fir-emulator-lecture/us-central1';
+
+      fetchPostsButton.addEventListener('click', async (event) => {
+        try {
+          const response = await fetch(`${BASE_API_URL}/fetchPosts`);
+          const json = await response.json();
+          console.log(json);
+        } catch (error) {
+          console.error('[Failed]fetchPostsButton : ', error);
+        }
       });
     </script>
   </body>

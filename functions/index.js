@@ -9,6 +9,10 @@ const postsCollection = admin.firestore().collection('posts');
 // https://firebase.google.com/docs/functions/write-firebase-functions
 
 exports.fetchPosts = functions.https.onRequest(async (request, response) => {
+  response.set('Access-Control-Allow-Origin', '*');
+  response.set('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS, POST');
+  response.set('Access-Control-Allow-Headers', 'Content-Type');
+
   functions.logger.info('Called the fetchPosts');
 
   if (request.method !== 'GET') {
