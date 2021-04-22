@@ -1,0 +1,11 @@
+{
+  "name": "firebase-emulator-lecture",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "firebase emulators:start --only functions,firestore,auth,hosting"
+  },
+  "author": "",
+  "license": "ISC"
+}
