@@ -5,6 +5,11 @@ const functions = require('firebase-functions');
 const cors = require('cors')({ origin: true });
 const { fetchPosts, createPost } = require('./services/PostService');
 
+if (process.env.FIRESTORE_EMULATOR_HOST) {
+  // ダミーデータ投入処理をする
+  require('./firestore/seeder');
+}
+
 // Create and Deploy Your First Cloud Functions
 // https://firebase.google.com/docs/functions/write-firebase-functions
 
