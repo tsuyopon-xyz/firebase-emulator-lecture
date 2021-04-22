@@ -41,7 +41,13 @@ exports.fetchPosts = functions.https.onRequest(async (request, response) => {
 });
 
 exports.createPost = functions.https.onRequest(async (request, response) => {
+  response.set('Access-Control-Allow-Origin', '*');
+  response.set('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS, POST');
+  response.set('Access-Control-Allow-Headers', 'Content-Type');
+  response.setHeader('Content-Type', 'application/json');
+
   functions.logger.info('Called the createPost');
+  console.log(typeof request.body, '@@@@@@@body');
 
   if (request.method !== 'POST') {
     response.status(400).json({
@@ -51,7 +57,10 @@ exports.createPost = functions.https.onRequest(async (request, response) => {
   }
 
   try {
-    const { title, body } = request.body;
+    const { title, body } =
+      typeof request.body === 'string'
+        ? JSON.parse(request.body)
+        : request.body;
     const savedData = await createPost({ title, body });
 
     response.json({ ...savedData });

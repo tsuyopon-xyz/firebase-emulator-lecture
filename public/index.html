@@ -191,6 +191,26 @@
           console.error('[Failed]fetchPostsButton : ', error);
         }
       });
+
+      createPostButton.addEventListener('click', async (event) => {
+        try {
+          const response = await fetch(`${BASE_API_URL}/createPost`, {
+            method: 'POST',
+            // headers: {
+            //   'Content-Type': 'application/json',
+            // },
+            body: JSON.stringify({
+              title: 'Hosting Emulatorから',
+              body: 'うまく届いたかな？ from HE',
+            }),
+          });
+
+          const json = await response.json();
+          console.log(json);
+        } catch (error) {
+          console.error('[Failed]fetchPostsButton : ', error);
+        }
+      });
     </script>
   </body>
 </html>
