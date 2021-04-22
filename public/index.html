@@ -196,9 +196,9 @@
         try {
           const response = await fetch(`${BASE_API_URL}/createPost`, {
             method: 'POST',
-            // headers: {
-            //   'Content-Type': 'application/json',
-            // },
+            headers: {
+              'Content-Type': 'application/json',
+            },
             body: JSON.stringify({
               title: 'Hosting Emulatorから',
               body: 'うまく届いたかな？ from HE',
